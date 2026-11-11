@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron &amp; Lime — Profile &amp; Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css?v=10">
+</head>
+<body>
+  <div id="app-shell"></div>
+
+  <template id="profile-tpl">
+    <div class="space-y-6 max-w-4xl pb-10">
+
+      <!-- Header Hero Card -->
+      <div class="card p-6 bg-gradient-to-r from-[#0E2B27] to-[#164E46] text-white relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-[var(--lime)]/10 pointer-events-none blur-xl"></div>
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 relative z-10">
+          
+          <!-- Avatar with Upload Button -->
+          <div class="relative group">
+            <div id="prof-hero-avatar-wrap" class="w-20 h-20 rounded-full overflow-hidden bg-white/10 border-2 border-[var(--lime)] flex items-center justify-center text-2xl font-bold font-display shadow-md">
+              <span id="prof-hero-initials">AM</span>
+            </div>
+            <label for="prof-photo-upload" class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-[10px] text-white font-medium">
+              <svg class="w-5 h-5 mb-0.5 text-[var(--lime)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Change</span>
+            </label>
+            <input type="file" id="prof-photo-upload" accept="image/*" class="hidden">
+          </div>
+
+          <!-- Hero User Info -->
+          <div class="flex-1 text-center sm:text-left">
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+              <h2 class="font-display text-3xl font-bold tracking-wide" id="prof-hero-name">Alex Morgan</h2>
+              <span class="badge badge-accent uppercase text-[10px] tracking-wider font-bold" id="prof-hero-role">ADMIN</span>
+            </div>
+            <p class="text-xs text-[#A3B8B2] mt-1 font-mono" id="prof-hero-username">@admin</p>
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-3 text-xs text-white/80">
+              <div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[var(--lime)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span id="prof-hero-email">admin@ironlime.gym</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[var(--lime)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span id="prof-hero-phone">012 345 678</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons on Hero -->
+          <div class="flex flex-row sm:flex-col gap-2 flex-shrink-0">
+            <button type="button" id="btn-quick-photo" class="btn btn-outline !text-white !border-white/30 hover:!bg-white/10 btn-sm text-xs">
+              <svg class="w-3.5 h-3.5 text-[var(--lime)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              Upload Photo
+            </button>
+            <button type="button" id="btn-remove-photo" class="btn btn-outline !text-red-300 !border-red-400/30 hover:!bg-red-900/30 btn-sm text-xs hidden">
+              Remove Photo
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex border-b border-[var(--line)] gap-2 sm:gap-6 overflow-x-auto text-sm font-semibold">
+        <button type="button" id="tab-profile" class="tab-btn pb-3 border-b-2 border-[var(--teal-900)] text-[var(--teal-900)] flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Personal Profile
+        </button>
+        <button type="button" id="tab-security" class="tab-btn pb-3 border-b-2 border-transparent text-[var(--muted)] hover:text-[var(--ink)] flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Security &amp; Password
+        </button>
+        <button type="button" id="tab-gym" class="tab-btn pb-3 border-b-2 border-transparent text-[var(--muted)] hover:text-[var(--ink)] flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1h-.2a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 8a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6v-.2a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.6 1h.2a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1z"/></svg>
+          Gym Settings &amp; Brand
+        </button>
+        <button type="button" id="tab-database" class="tab-btn pb-3 border-b-2 border-transparent text-[var(--muted)] hover:text-[var(--ink)] flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+          WampServer &amp; phpMyAdmin
+        </button>
+      </div>
+
+      <!-- TAB 1: PERSONAL PROFILE FORM -->
+      <div id="view-profile" class="space-y-6">
+        <form id="form-personal" class="card p-6 space-y-5">
+          <div class="border-b border-[var(--line)] pb-3 flex justify-between items-center">
+            <div>
+              <h3 class="font-display text-xl font-bold text-[var(--ink)]">Personal Information</h3>
+              <p class="text-xs text-[var(--muted)]">Update your name, email address, phone, and account profile photo</p>
+            </div>
+            <span class="badge badge-muted text-[11px] font-mono" id="lbl-uid">U-0001</span>
+          </div>
+
+          <!-- Photo upload preview panel -->
+          <div class="p-4 rounded-lg bg-[var(--bg)] border border-[var(--line)] flex flex-col sm:flex-row items-center gap-4">
+            <div id="prof-form-preview" class="avatar w-14 h-14 text-lg">AM</div>
+            <div class="flex-1 text-center sm:text-left">
+              <label class="field-label !mb-0 font-bold">Profile Picture</label>
+              <p class="text-[11px] text-[var(--muted)] mt-0.5">JPG, PNG, or GIF up to 2MB. Appears in the navigation and operator tags.</p>
+            </div>
+            <div class="flex gap-2">
+              <label for="prof-photo-input-form" class="btn btn-outline btn-sm cursor-pointer">Choose Image</label>
+              <input type="file" id="prof-photo-input-form" accept="image/*" class="hidden">
+              <button type="button" id="btn-clear-photo-form" class="btn btn-danger btn-sm text-xs hidden">Remove</button>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="field-label">Full Name *</label>
+              <input id="inp-name" name="name" class="input font-medium" required placeholder="e.g. Alex Morgan">
+            </div>
+            <div>
+              <label class="field-label">Username (Login ID)</label>
+              <input id="inp-username" name="username" class="input bg-gray-50 text-[var(--muted)] font-mono" readonly>
+              <p class="text-[10px] text-[var(--muted)] mt-1">Username is fixed to preserve operator audit logs.</p>
+            </div>
+            <div>
+              <label class="field-label">Email Address *</label>
+              <input id="inp-email" type="email" name="email" class="input" required placeholder="e.g. alex@ironlime.gym">
+            </div>
+            <div>
+              <label class="field-label">Phone Number *</label>
+              <input id="inp-phone" name="phone" class="input" required placeholder="e.g. 012 345 678">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="field-label">Staff Role &amp; Access Tier</label>
+              <div class="p-3 rounded bg-[var(--bg)] border border-[var(--line)] flex items-center justify-between text-xs">
+                <div>
+                  <span class="font-bold text-[var(--ink)] capitalize" id="lbl-role-desc">Admin (Full Control)</span>
+                  <p class="text-[11px] text-[var(--muted)] mt-0.5" id="lbl-role-perm">Has unrestricted management access across all modules, payments, and system configurations.</p>
+                </div>
+                <span class="badge badge-info uppercase text-[10px]" id="lbl-role-badge">ADMIN</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-3 border-t border-[var(--line)]">
+            <button type="submit" class="btn btn-primary px-6">Save Profile Changes</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 2: SECURITY & PASSWORD -->
+      <div id="view-security" class="space-y-6 hidden">
+        <form id="form-pwd" class="card p-6 space-y-4">
+          <div class="border-b border-[var(--line)] pb-3">
+            <h3 class="font-display text-xl font-bold text-[var(--ink)]">Change Password</h3>
+            <p class="text-xs text-[var(--muted)]">Update security credentials for your operator account</p>
+          </div>
+
+          <div>
+            <label class="field-label">Current Password *</label>
+            <div class="relative">
+              <input type="password" id="cur-pass" class="input pr-10" required placeholder="Enter current password">
+              <button type="button" onclick="togglePassVisibility('cur-pass', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--ink)] p-1 rounded transition focus:outline-none" aria-label="Toggle password visibility">
+                <svg class="eye-show w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="eye-hide w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="field-label">New Password *</label>
+              <div class="relative">
+                <input type="password" id="new-pass" class="input pr-10" required minlength="6" placeholder="At least 6 characters">
+                <button type="button" onclick="togglePassVisibility('new-pass', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--ink)] p-1 rounded transition focus:outline-none" aria-label="Toggle password visibility">
+                  <svg class="eye-show w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-hide w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label">Confirm New Password *</label>
+              <div class="relative">
+                <input type="password" id="confirm-pass" class="input pr-10" required minlength="6" placeholder="Repeat new password">
+                <button type="button" onclick="togglePassVisibility('confirm-pass', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--ink)] p-1 rounded transition focus:outline-none" aria-label="Toggle password visibility">
+                  <svg class="eye-show w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-hide w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="pwd-msg" class="text-xs hidden p-2.5 rounded"></div>
+
+          <div class="flex justify-end pt-3 border-t border-[var(--line)]">
+            <button type="submit" class="btn btn-primary px-6">Update Password</button>
+          </div>
+        </form>
+
+        <!-- Active Session Card -->
+        <div class="card p-5 space-y-3">
+          <h4 class="font-display text-lg font-bold text-[var(--ink)]">Active Staff Session</h4>
+          <div class="flex items-center justify-between text-xs p-3 rounded bg-[var(--bg)] border border-[var(--line)]">
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+              <div>
+                <p class="font-semibold text-[var(--ink)]">Current Browser Device</p>
+                <p class="text-[11px] text-[var(--muted)]">Authenticated via Local Session Storage</p>
+              </div>
+            </div>
+            <button onclick="Auth.logout()" class="btn btn-outline btn-sm text-xs">Sign Out</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: GYM SETTINGS & BRANDING (COMBINED) -->
+      <div id="view-gym" class="space-y-6 hidden">
+        <form id="form-settings" class="card p-6 space-y-5">
+          <div class="border-b border-[var(--line)] pb-3 flex justify-between items-center">
+            <div>
+              <h3 class="font-display text-xl font-bold text-[var(--ink)]">Gym Information &amp; Branding</h3>
+              <p class="text-xs text-[var(--muted)]">Credentials and details printed on receipts, contracts, and export reports</p>
+            </div>
+            <span class="badge badge-success text-[10px]" id="lbl-admin-tag">ADMIN CONTROL</span>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="field-label">Gym Facility Name *</label>
+              <input name="gymName" id="set-name" class="input font-semibold" required>
+            </div>
+            <div>
+              <label class="field-label">Facility Phone *</label>
+              <input name="phone" id="set-phone" class="input" required>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="field-label">Physical Address *</label>
+              <input name="address" id="set-address" class="input" required>
+            </div>
+            <div>
+              <label class="field-label">Official Contact Email *</label>
+              <input name="email" id="set-email" type="email" class="input" required>
+            </div>
+            <div>
+              <label class="field-label">Base Operating Currency *</label>
+              <select name="currency" id="set-currency" class="input font-medium">
+                <option value="USD">USD ($ - US Dollar)</option>
+                <option value="KHR">KHR (៛ - Cambodian Riel)</option>
+                <option value="THB">THB (฿ - Thai Baht)</option>
+                <option value="EUR">EUR (€ - Euro)</option>
+                <option value="GBP">GBP (£ - British Pound)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-[var(--line)]">
+            <h4 class="font-display text-base font-bold text-[var(--ink)] mb-3">Facility Operating Hours</h4>
+            <div class="grid sm:grid-cols-3 gap-3">
+              <div>
+                <label class="field-label">Monday — Friday</label>
+                <input name="hoursWeekday" id="set-hours-weekday" class="input text-xs" value="06:00 – 22:00">
+              </div>
+              <div>
+                <label class="field-label">Saturday</label>
+                <input name="hoursSat" id="set-hours-sat" class="input text-xs" value="07:00 – 20:00">
+              </div>
+              <div>
+                <label class="field-label">Sunday &amp; Holidays</label>
+                <input name="hoursSun" id="set-hours-sun" class="input text-xs" value="08:00 – 18:00">
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-3 border-t border-[var(--line)]">
+            <button type="submit" id="btn-save-settings" class="btn btn-primary px-6">Save Gym Information</button>
+          </div>
+        </form>
+      </div>
+
+
+      <!-- TAB 4: WAMPSERVER & PHPMYADMIN DATABASE INTEGRATION -->
+      <div id="view-database" class="space-y-6 hidden">
+        <div class="card p-6 space-y-6">
+          <div class="border-b border-[var(--line)] pb-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 font-bold text-xs">W64</span>
+                <h3 class="font-display text-xl font-bold text-[var(--ink)]">WampServer 64 &amp; phpMyAdmin Database Hub</h3>
+              </div>
+              <p class="text-xs text-[var(--muted)] mt-1">Connect your local WampServer64 Apache/MySQL/MariaDB to manage and control gym data via phpMyAdmin on localhost.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="badge-db-status" class="badge badge-muted text-xs">Checking Connection...</span>
+            </div>
+          </div>
+
+          <!-- Configuration and Quick Links Cards -->
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="p-4 rounded-xl border border-[var(--line)] bg-[var(--bg)] flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs font-semibold text-[var(--muted)] uppercase tracking-wider mb-2">
+                  <span>WampServer Host</span>
+                  <span class="text-emerald-700 font-bold">Default</span>
+                </div>
+                <div class="font-mono text-base font-bold text-[var(--ink)]">localhost:3306</div>
+                <p class="text-xs text-[var(--muted)] mt-1">User: <code class="bg-white px-1.5 py-0.5 rounded border border-[var(--line)] font-bold">root</code> &bull; Pass: <span class="text-gray-500 italic">None (blank)</span></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-[var(--line)] flex items-center justify-between">
+                <span class="text-[11px] text-[var(--muted)]">Database</span>
+                <span class="font-mono text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">gym_management_db</span>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-[var(--line)] bg-[var(--bg)] flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs font-semibold text-[var(--muted)] uppercase tracking-wider mb-2">
+                  <span>phpMyAdmin Control</span>
+                  <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </div>
+                <div class="font-mono text-base font-bold text-[var(--ink)]">localhost/phpmyadmin</div>
+                <p class="text-xs text-[var(--muted)] mt-1">Directly view and edit SQL tables, execute queries, and inspect relations.</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-[var(--line)]">
+                <a href="http://localhost/phpmyadmin" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm w-full text-center flex items-center justify-center gap-1.5">
+                  <span>Open phpMyAdmin</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-[var(--line)] bg-[var(--bg)] flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs font-semibold text-[var(--muted)] uppercase tracking-wider mb-2">
+                  <span>SQL Database File</span>
+                  <span class="text-blue-700 font-bold">1-Click</span>
+                </div>
+                <div class="font-mono text-base font-bold text-[var(--ink)]">schema.sql</div>
+                <p class="text-xs text-[var(--muted)] mt-1">Complete schema with 13 tables &amp; starter data ready for phpMyAdmin Import.</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-[var(--line)]">
+                <button type="button" id="btn-download-sql" class="btn btn-primary btn-sm w-full flex items-center justify-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  <span>Download SQL Schema</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connection Mode Selector -->
+          <div class="p-5 rounded-xl border border-[var(--line)] bg-white space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h4 class="font-display text-lg font-bold text-[var(--ink)]">Active Data Source Mode</h4>
+                <p class="text-xs text-[var(--muted)]">Choose whether the website operates against local browser storage or directly connects to your WampServer64 PHP backend on localhost.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" id="btn-test-wamp-conn" class="btn btn-outline btn-sm flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                  <span>Test Connection</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-3 pt-2">
+              <label class="flex items-start gap-3 p-4 rounded-lg border border-[var(--line)] cursor-pointer hover:bg-[var(--bg)] transition-colors">
+                <input type="radio" name="dbDataSourceMode" value="local" id="mode-local" class="mt-1" checked>
+                <div>
+                  <div class="font-bold text-sm text-[var(--ink)] flex items-center gap-2">
+                    <span>Browser Storage (Offline / Preview Mode)</span>
+                    <span class="badge badge-success text-[10px]">Instant</span>
+                  </div>
+                  <p class="text-xs text-[var(--muted)] mt-1">Default standalone mode. Works seamlessly inside any browser without requiring WampServer running.</p>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-3 p-4 rounded-lg border border-[var(--line)] cursor-pointer hover:bg-[var(--bg)] transition-colors">
+                <input type="radio" name="dbDataSourceMode" value="wamp" id="mode-wamp" class="mt-1">
+                <div>
+                  <div class="font-bold text-sm text-[var(--ink)] flex items-center gap-2">
+                    <span>WampServer64 (MySQL / MariaDB via PHP)</span>
+                    <span class="badge badge-warning text-[10px]">Localhost</span>
+                  </div>
+                  <p class="text-xs text-[var(--muted)] mt-1">Calls your local PHP backend in <code class="font-mono text-[11px]">public/php/api/</code> connected to MySQL/phpMyAdmin.</p>
+                </div>
+              </label>
+            </div>
+
+            <div id="wamp-config-box" class="p-4 rounded-lg bg-[var(--bg)] border border-[var(--line)] space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-[var(--ink)]">Local WampServer API Base URL:</span>
+                <span class="text-[11px] text-[var(--muted)]">Typically hosted inside Wamp's <code class="font-mono">www/</code> folder</span>
+              </div>
+              <div class="flex gap-2">
+                <input type="text" id="wamp-api-url" class="input font-mono text-xs flex-1" value="http://localhost/iron-lime/public/php/api" placeholder="http://localhost/iron-lime/public/php/api">
+                <button type="button" id="btn-save-wamp-url" class="btn btn-primary btn-sm px-4">Save URL</button>
+              </div>
+              <p class="text-[11px] text-[var(--muted)]">If testing within this applet directly, relative path is automatically routed to <code class="font-mono">/php/api</code>.</p>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Setup Instructions for WampServer64 & phpMyAdmin -->
+          <div class="p-5 rounded-xl border border-[var(--line)] bg-[var(--bg)] space-y-4">
+            <h4 class="font-display text-lg font-bold text-[var(--ink)] flex items-center gap-2">
+              <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>How to Set Up in WampServer64 &amp; phpMyAdmin in 3 Steps</span>
+            </h4>
+
+            <div class="space-y-3 text-xs text-[var(--ink)]">
+              <div class="flex items-start gap-3 p-3 bg-white rounded-lg border border-[var(--line)]">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-900 text-white flex items-center justify-center font-bold text-xs">1</span>
+                <div>
+                  <p class="font-bold">Start WampServer 64</p>
+                  <p class="text-[var(--muted)] mt-0.5">Launch WampServer on Windows. Ensure the system tray icon turns <strong class="text-emerald-700">GREEN</strong> (Apache and MySQL/MariaDB services are active).</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 p-3 bg-white rounded-lg border border-[var(--line)]">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-900 text-white flex items-center justify-center font-bold text-xs">2</span>
+                <div class="flex-1">
+                  <p class="font-bold">Import Database Schema in phpMyAdmin</p>
+                  <p class="text-[var(--muted)] mt-0.5">Open <a href="http://localhost/phpmyadmin" target="_blank" class="text-emerald-700 underline font-semibold">http://localhost/phpmyadmin</a> in your browser. Log in with user <code class="font-bold">root</code> (leave password blank).</p>
+                  <div class="mt-2 p-2 bg-[var(--bg)] rounded border border-[var(--line)] space-y-1">
+                    <p>&bull; Click the <strong class="text-[var(--ink)]">Import</strong> tab at the top.</p>
+                    <p>&bull; Click <strong class="text-[var(--ink)]">Choose File</strong> and select <code class="font-bold text-emerald-800">schema.sql</code> (downloaded above or located in <code class="font-mono">public/php/database/schema.sql</code>).</p>
+                    <p>&bull; Click <strong class="text-[var(--ink)]">Import</strong> at the bottom. The database <code class="font-bold font-mono">gym_management_db</code> with 13 tables and initial records will be created automatically!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 p-3 bg-white rounded-lg border border-[var(--line)]">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-900 text-white flex items-center justify-center font-bold text-xs">3</span>
+                <div class="flex-1">
+                  <p class="font-bold">Place Project Files in Wamp's WWW Folder (Optional for standalone localhost running)</p>
+                  <p class="text-[var(--muted)] mt-0.5">Copy this project directory into <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-[var(--line)]">C:\wamp64\www\iron-lime\</code>.</p>
+                  <p class="text-[var(--muted)] mt-1">Then you can run and control the gym system from both <strong class="text-[var(--ink)]">http://localhost/iron-lime</strong> and monitor every row, member, payment, and check-in live inside <strong class="text-[var(--ink)]">phpMyAdmin</strong>!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </template>
+
+  <script src="js/common.js"></script>
+  <script>
+    const outlet = renderChrome('profile', 'Profile & Settings');
+    outlet.innerHTML = document.getElementById('profile-tpl').innerHTML;
+
+    function togglePassVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      const showIcon = btn.querySelector('.eye-show');
+      const hideIcon = btn.querySelector('.eye-hide');
+      if (showIcon) showIcon.classList.toggle('hidden', isPassword);
+      if (hideIcon) hideIcon.classList.toggle('hidden', !isPassword);
+    }
+
+    // ------------------------------------------------------------------
+    // Tab Switching Logic
+    // ------------------------------------------------------------------
+    const tabs = [
+      { btnId: 'tab-profile',  viewId: 'view-profile' },
+      { btnId: 'tab-security', viewId: 'view-security' },
+      { btnId: 'tab-gym',      viewId: 'view-gym' },
+      { btnId: 'tab-database', viewId: 'view-database' }
+    ];
+
+    function activateTab(tabKey){
+      tabs.forEach(t => {
+        const btn = document.getElementById(t.btnId);
+        const view = document.getElementById(t.viewId);
+        const match = t.btnId === 'tab-' + tabKey;
+        if (btn) {
+          btn.className = match
+            ? 'tab-btn pb-3 border-b-2 border-[var(--teal-900)] text-[var(--teal-900)] flex items-center gap-2 whitespace-nowrap'
+            : 'tab-btn pb-3 border-b-2 border-transparent text-[var(--muted)] hover:text-[var(--ink)] flex items-center gap-2 whitespace-nowrap';
+        }
+        if (view) {
+          view.classList.toggle('hidden', !match);
+        }
+      });
+    }
+
+    document.getElementById('tab-profile').addEventListener('click', () => activateTab('profile'));
+    document.getElementById('tab-security').addEventListener('click', () => activateTab('security'));
+    document.getElementById('tab-gym').addEventListener('click', () => activateTab('gym'));
+    document.getElementById('tab-database').addEventListener('click', () => activateTab('database'));
+
+    // Check query param for default tab (e.g. ?tab=gym)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTab = urlParams.get('tab') || 'profile';
+    if (['profile', 'security', 'gym', 'database'].includes(initialTab)){
+      activateTab(initialTab);
+    }
+
+    // ------------------------------------------------------------------
+    // User Profile Population
+    // ------------------------------------------------------------------
+    let currentUser = Auth.currentUser();
+    let currentPhotoData = currentUser ? (currentUser.photo || '') : '';
+
+    function renderUserUI(){
+      currentUser = Auth.currentUser();
+      if (!currentUser) return;
+
+      // Hero
+      document.getElementById('prof-hero-name').textContent = currentUser.name;
+      document.getElementById('prof-hero-role').textContent = currentUser.role;
+      document.getElementById('prof-hero-username').textContent = '@' + currentUser.username;
+      document.getElementById('prof-hero-email').textContent = currentUser.email || 'No email';
+      document.getElementById('prof-hero-phone').textContent = currentUser.phone || 'No phone';
+
+      // Avatar
+      const heroWrap = document.getElementById('prof-hero-avatar-wrap');
+      const previewWrap = document.getElementById('prof-form-preview');
+      const btnRemoveHero = document.getElementById('btn-remove-photo');
+      const btnClearForm = document.getElementById('btn-clear-photo-form');
+
+      if (currentUser.photo){
+        heroWrap.innerHTML = `<img src="${currentUser.photo}" class="w-full h-full object-cover">`;
+        previewWrap.innerHTML = `<img src="${currentUser.photo}" class="w-full h-full object-cover rounded-full">`;
+        btnRemoveHero.classList.remove('hidden');
+        btnClearForm.classList.remove('hidden');
+      } else {
+        const inits = initials(currentUser.name);
+        heroWrap.innerHTML = `<span id="prof-hero-initials">${inits}</span>`;
+        previewWrap.className = 'avatar w-14 h-14 text-lg';
+        previewWrap.textContent = inits;
+        btnRemoveHero.classList.add('hidden');
+        btnClearForm.classList.add('hidden');
+      }
+
+      // Form fields
+      document.getElementById('inp-name').value = currentUser.name || '';
+      document.getElementById('inp-username').value = currentUser.username || '';
+      document.getElementById('inp-email').value = currentUser.email || '';
+      document.getElementById('inp-phone').value = currentUser.phone || '';
+      document.getElementById('lbl-uid').textContent = currentUser.id || 'U-0001';
+      document.getElementById('lbl-role-badge').textContent = currentUser.role.toUpperCase();
+
+      // Role description
+      const descEl = document.getElementById('lbl-role-desc');
+      const permEl = document.getElementById('lbl-role-perm');
+      if (currentUser.role === 'admin'){
+        descEl.textContent = 'Administrator (Full Access)';
+        permEl.textContent = 'Unrestricted access to gym finances, staff, settings, database, and members.';
+      } else if (currentUser.role === 'receptionist'){
+        descEl.textContent = 'Front Desk Receptionist';
+        permEl.textContent = 'Front-desk operations, check-in kiosk, payments, and member onboarding.';
+      } else {
+        descEl.textContent = 'Personal Trainer & Coach';
+        permEl.textContent = 'Fitness classes timetable, assigned trainees, workout routines, and diet plans.';
+      }
+
+      // Restrict gym settings modification to admins
+      const isAdmin = currentUser.role === 'admin';
+      const btnSaveSettings = document.getElementById('btn-save-settings');
+      const lblAdminTag = document.getElementById('lbl-admin-tag');
+      if (!isAdmin){
+        btnSaveSettings.disabled = true;
+        btnSaveSettings.classList.add('opacity-50', 'cursor-not-allowed');
+        btnSaveSettings.textContent = 'Admin Only Setting';
+        lblAdminTag.textContent = 'VIEW ONLY';
+        lblAdminTag.className = 'badge badge-muted text-[10px]';
+        document.querySelectorAll('#form-settings input, #form-settings select').forEach(el => el.disabled = true);
+      }
+    }
+
+    renderUserUI();
+
+    // ------------------------------------------------------------------
+    // Profile Photo Upload Handlers
+    // ------------------------------------------------------------------
+    function handlePhotoUpload(file){
+      if (!file) return;
+      if (!file.type.startsWith('image/')){
+        toast('Please upload a valid image file (PNG/JPG)', 'error');
+        return;
+      }
+      if (file.size > 3 * 1024 * 1024){
+        toast('Image exceeds 3MB limit', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e){
+        currentPhotoData = e.target.result;
+        Auth.updateProfile(currentUser.id, { photo: currentPhotoData });
+        toast('Profile picture updated successfully', 'success');
+        renderUserUI();
+        // Update sidebar
+        renderChrome('profile', 'Profile & Settings');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('prof-photo-upload').addEventListener('change', function(){
+      if (this.files[0]) handlePhotoUpload(this.files[0]);
+    });
+    document.getElementById('prof-photo-input-form').addEventListener('change', function(){
+      if (this.files[0]) handlePhotoUpload(this.files[0]);
+    });
+    document.getElementById('btn-quick-photo').addEventListener('click', () => {
+      document.getElementById('prof-photo-upload').click();
+    });
+
+    // Remove photo
+    function removePhoto(){
+      confirmDialog({
+        title: 'Remove Profile Picture',
+        message: 'Remove your custom profile picture and revert to avatar initials?',
+        confirmText: 'Remove Photo',
+        danger: true,
+        onConfirm: () => {
+          currentPhotoData = '';
+          Auth.updateProfile(currentUser.id, { photo: '' });
+          toast('Profile picture removed', 'info');
+          renderUserUI();
+          renderChrome('profile', 'Profile & Settings');
+        }
+      });
+    }
+    document.getElementById('btn-remove-photo').addEventListener('click', removePhoto);
+    document.getElementById('btn-clear-photo-form').addEventListener('click', removePhoto);
+
+    // ------------------------------------------------------------------
+    // Personal Details Submit
+    // ------------------------------------------------------------------
+    document.getElementById('form-personal').addEventListener('submit', function(e){
+      e.preventDefault();
+      const updated = Auth.updateProfile(currentUser.id, {
+        name: document.getElementById('inp-name').value.trim(),
+        email: document.getElementById('inp-email').value.trim(),
+        phone: document.getElementById('inp-phone').value.trim(),
+        photo: currentPhotoData
+      });
+
+      if (updated){
+        toast('Personal profile updated successfully', 'success');
+        renderUserUI();
+        renderChrome('profile', 'Profile & Settings');
+      }
+    });
+
+    // ------------------------------------------------------------------
+    // Password Change Submit
+    // ------------------------------------------------------------------
+    document.getElementById('form-pwd').addEventListener('submit', function(e){
+      e.preventDefault();
+      const cur = document.getElementById('cur-pass').value;
+      const nw = document.getElementById('new-pass').value;
+      const conf = document.getElementById('confirm-pass').value;
+      const msg = document.getElementById('pwd-msg');
+
+      if (nw.length < 6){
+        msg.className = 'text-xs text-red-600 bg-red-50 border border-red-200 block p-2.5 rounded';
+        msg.textContent = 'New password must be at least 6 characters long!';
+        return;
+      }
+
+      if (nw !== conf){
+        msg.className = 'text-xs text-red-600 bg-red-50 border border-red-200 block p-2.5 rounded';
+        msg.textContent = 'New passwords do not match!';
+        return;
+      }
+
+      const ok = Auth.changePassword(currentUser.id, cur, nw);
+      if (!ok){
+        msg.className = 'text-xs text-red-600 bg-red-50 border border-red-200 block p-2.5 rounded';
+        msg.textContent = 'Current password incorrect. Please verify your credentials.';
+      } else {
+        msg.className = 'text-xs text-green-700 bg-green-50 border border-green-200 block p-2.5 rounded';
+        msg.textContent = '✓ Password changed successfully! Your next login will require the new password.';
+        document.getElementById('form-pwd').reset();
+        toast('Password updated successfully', 'success');
+      }
+    });
+
+    // ------------------------------------------------------------------
+    // Gym Settings Population & Submit
+    // ------------------------------------------------------------------
+    const s = DB.get('settings', {});
+    document.getElementById('set-name').value = s.gymName || 'Iron & Lime Fitness';
+    document.getElementById('set-phone').value = s.phone || '+855 12 345 678';
+    document.getElementById('set-address').value = s.address || '88 Riverside Avenue, Siem Reap';
+    document.getElementById('set-email').value = s.email || 'hello@ironlime.gym';
+    document.getElementById('set-currency').value = s.currency || 'USD';
+
+    if (s.businessHours){
+      if (s.businessHours.weekday) document.getElementById('set-hours-weekday').value = s.businessHours.weekday;
+      if (s.businessHours.saturday) document.getElementById('set-hours-sat').value = s.businessHours.saturday;
+      if (s.businessHours.sunday) document.getElementById('set-hours-sun').value = s.businessHours.sunday;
+    }
+
+    document.getElementById('form-settings').addEventListener('submit', function(e){
+      e.preventDefault();
+      if (currentUser.role !== 'admin'){
+        toast('Only administrators can update gym configuration', 'error');
+        return;
+      }
+
+      const curSettings = DB.get('settings', {});
+      curSettings.gymName = document.getElementById('set-name').value.trim();
+      curSettings.phone = document.getElementById('set-phone').value.trim();
+      curSettings.address = document.getElementById('set-address').value.trim();
+      curSettings.email = document.getElementById('set-email').value.trim();
+      curSettings.currency = document.getElementById('set-currency').value;
+      curSettings.businessHours = {
+        weekday: document.getElementById('set-hours-weekday').value.trim(),
+        saturday: document.getElementById('set-hours-sat').value.trim(),
+        sunday: document.getElementById('set-hours-sun').value.trim()
+      };
+
+      DB.set('settings', curSettings);
+      toast('Gym settings and branding saved', 'success');
+    });
+
+    // ------------------------------------------------------------------
+    // WampServer & phpMyAdmin Integration Logic
+    // ------------------------------------------------------------------
+    const dbConfig = DB.get('wamp_config', {
+      mode: 'local',
+      apiUrl: 'http://localhost/iron-lime/public/php/api'
+    });
+
+    const modeLocalRadio = document.getElementById('mode-local');
+    const modeWampRadio = document.getElementById('mode-wamp');
+    const wampApiUrlInput = document.getElementById('wamp-api-url');
+    const badgeDbStatus = document.getElementById('badge-db-status');
+
+    if (modeLocalRadio && modeWampRadio) {
+      if (dbConfig.mode === 'wamp') {
+        modeWampRadio.checked = true;
+      } else {
+        modeLocalRadio.checked = true;
+      }
+
+      modeLocalRadio.addEventListener('change', () => {
+        dbConfig.mode = 'local';
+        DB.set('wamp_config', dbConfig);
+        toast('Data source switched to Local Storage mode', 'info');
+        updateDbStatusBadge('local');
+      });
+
+      modeWampRadio.addEventListener('change', () => {
+        dbConfig.mode = 'wamp';
+        DB.set('wamp_config', dbConfig);
+        toast('Data source switched to WampServer MySQL mode', 'success');
+        testWampConnection();
+      });
+    }
+
+    if (wampApiUrlInput) {
+      wampApiUrlInput.value = dbConfig.apiUrl || 'http://localhost/iron-lime/public/php/api';
+      document.getElementById('btn-save-wamp-url')?.addEventListener('click', () => {
+        dbConfig.apiUrl = wampApiUrlInput.value.trim();
+        DB.set('wamp_config', dbConfig);
+        toast('WampServer API URL saved', 'success');
+        testWampConnection();
+      });
+    }
+
+    function updateDbStatusBadge(status, text) {
+      if (!badgeDbStatus) return;
+      if (status === 'connected') {
+        badgeDbStatus.className = 'badge badge-success text-xs';
+        badgeDbStatus.textContent = text || 'Connected to WampServer';
+      } else if (status === 'local') {
+        badgeDbStatus.className = 'badge badge-muted text-xs';
+        badgeDbStatus.textContent = 'Using Local Storage Mode';
+      } else if (status === 'testing') {
+        badgeDbStatus.className = 'badge badge-warning text-xs';
+        badgeDbStatus.textContent = 'Checking localhost:3306...';
+      } else {
+        badgeDbStatus.className = 'badge badge-danger text-xs';
+        badgeDbStatus.textContent = text || 'WampServer Disconnected';
+      }
+    }
+
+    async function testWampConnection() {
+      updateDbStatusBadge('testing');
+      const url = wampApiUrlInput.value.trim() || '/php/api';
+      const testUrl = url.replace(/\/$/, '') + '/status.php';
+
+      try {
+        const res = await fetch(testUrl, { method: 'GET', cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (data.success) {
+          updateDbStatusBadge('connected', 'Connected: MySQL (' + (data.counts?.members ?? 0) + ' members)');
+          toast('Connected to WampServer MySQL database!', 'success');
+        } else {
+          throw new Error(data.message || 'Database error');
+        }
+      } catch (err) {
+        updateDbStatusBadge('disconnected', 'WampServer Offline / Unreachable');
+        toast('Could not connect to WampServer at ' + testUrl + '. Ensure WampServer is green.', 'warning');
+      }
+    }
+
+    document.getElementById('btn-test-wamp-conn')?.addEventListener('click', testWampConnection);
+
+    // Download SQL Schema button
+    document.getElementById('btn-download-sql')?.addEventListener('click', async () => {
+      try {
+        const res = await fetch('/php/database/schema.sql');
+        let sqlText = '';
+        if (res.ok) {
+          sqlText = await res.text();
+        } else {
+          sqlText = '-- Iron & Lime Gym Management System Schema\n-- Import into phpMyAdmin\n';
+        }
+        const blob = new Blob([sqlText], { type: 'text/sql' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'gym_management_db.sql';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        toast('Downloaded gym_management_db.sql for phpMyAdmin import', 'success');
+      } catch (e) {
+        window.open('/php/database/schema.sql', '_blank');
+      }
+    });
+
+    // Check initial state
+    if (dbConfig.mode === 'wamp') {
+      testWampConnection();
+    } else {
+      updateDbStatusBadge('local');
+    }
+
+  </script>
+</body>
+</html>

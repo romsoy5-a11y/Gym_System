@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron &amp; Lime - Gym Management System</title>
+  <meta name="description" content="Comprehensive gym management system featuring member tracking, class scheduling, automated recurring billing, and session attendance.">
+  <meta property="og:title" content="Iron &amp; Lime - Gym Management System">
+  <meta property="og:description" content="Comprehensive gym management system featuring member tracking, class scheduling, automated recurring billing, and session attendance.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css?v=10">
+  <style>
+    /* Ambient geometric background decorative circles matching the original deep teal screenshot */
+    .bg-circle-top {
+      position: absolute;
+      top: -120px;
+      right: -80px;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(23, 84, 76, 0.45) 0%, rgba(14, 43, 39, 0.15) 70%, transparent 100%);
+      pointer-events: none;
+    }
+    .bg-circle-bottom {
+      position: absolute;
+      bottom: -100px;
+      right: 40px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(207, 255, 61, 0.18);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen m-0 p-0 font-['Inter',sans-serif] bg-white flex flex-col md:flex-row overflow-x-hidden">
+
+  <!-- Left Half: Original Deep Teal Hero Showcase -->
+  <div class="w-full md:w-1/2 min-h-[380px] md:min-h-screen bg-[#0E2B27] text-white p-8 md:p-16 flex flex-col justify-between relative overflow-hidden flex-shrink-0">
+    <!-- Ambient geometric circles -->
+    <div class="bg-circle-top"></div>
+    <div class="bg-circle-bottom"></div>
+
+    <!-- Top Brand: Badge and Text -->
+    <div class="relative z-10 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#CFFF3D] text-[#0E2B27] flex items-center justify-center font-['Barlow_Condensed'] font-bold text-lg leading-none shadow-sm">
+        IL
+      </div>
+      <span class="font-['Barlow_Condensed'] text-2xl font-bold tracking-wider text-white">
+        IRON &amp; LIME
+      </span>
+    </div>
+
+    <!-- Center Hero Slogan -->
+    <div class="relative z-10 my-12 md:my-auto max-w-lg">
+      <h1 class="font-['Barlow_Condensed'] text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tight leading-[1.04]">
+        Run the floor.<br>
+        Not the spreadsheets.
+      </h1>
+      <p class="mt-6 text-[#A3B8B2] text-base md:text-lg leading-relaxed font-normal max-w-md">
+        Members, memberships, trainers, classes, payments and equipment — one system for the whole gym.
+      </p>
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div class="relative z-10 text-xs text-[#5D7770]">
+      &copy; 2026 Iron &amp; Lime Fitness. Internal staff system.
+    </div>
+  </div>
+
+  <!-- Right Half: Clean Sign-in Form matching the screenshot -->
+  <div class="w-full md:w-1/2 min-h-full flex items-center justify-center p-8 md:p-16 lg:p-24 bg-white relative">
+    <div class="w-full max-w-md">
+      
+      <!-- Heading -->
+      <h2 class="text-3xl sm:text-4xl font-bold text-[#122420] tracking-tight font-['Inter',sans-serif]">
+        Sign in to your account
+      </h2>
+      <p class="text-sm text-[#6B7C77] mt-2 font-normal">
+        Enter your staff credentials to continue.
+      </p>
+
+      <!-- Form -->
+      <form id="login-form" class="mt-8 space-y-5">
+        <div>
+          <label class="block text-xs font-medium text-[#3F534E] mb-2" for="username">
+            Username
+          </label>
+          <input 
+            id="username" 
+            class="w-full px-4 py-3 rounded-lg border border-[#DCE3DF] text-[#122420] placeholder-[#8FA39D] text-sm focus:outline-none focus:border-[#17544C] focus:ring-2 focus:ring-[#17544C]/15 transition bg-white" 
+            type="text" 
+            required 
+            placeholder="e.g. admin"
+          >
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-[#3F534E] mb-2" for="password">
+            Password
+          </label>
+          <div class="relative">
+            <input 
+              id="password" 
+              class="w-full px-4 py-3 rounded-lg border border-[#DCE3DF] text-[#122420] placeholder-[#8FA39D] text-sm focus:outline-none focus:border-[#17544C] focus:ring-2 focus:ring-[#17544C]/15 transition pr-16 bg-white" 
+              type="password" 
+              required 
+              placeholder="••••••••"
+            >
+            <button 
+              type="button" 
+              id="toggle-password" 
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-medium text-[#6B7C77] hover:text-[#122420] transition focus:outline-none px-1"
+            >
+              <span id="pwd-text">Show</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="login-error" class="text-xs text-red-600 bg-red-50 p-2.5 rounded-md border border-red-200 hidden"></div>
+
+        <!-- Signature Neon Lime Button matching the photo -->
+        <button 
+          type="submit" 
+          class="w-full py-3.5 px-6 rounded-lg bg-[#CFFF3D] hover:bg-[#BCEE2A] text-[#0E2B27] font-bold text-sm tracking-wide transition shadow-sm"
+        >
+          Sign in
+        </button>
+      </form>
+
+      <!-- Demo Accounts Strip matching the photo -->
+      <div class="mt-8 pt-6 border-t border-[#EEF2EF]">
+        <span class="block text-xs text-[#6B7C77] mb-3">Demo accounts</span>
+        <div class="grid grid-cols-3 gap-2.5">
+          <button 
+            type="button" 
+            onclick="fillDemo('admin')" 
+            class="py-2 px-3 text-center rounded-lg border border-[#DCE3DF] bg-white hover:bg-[#F5F7F5] text-xs font-semibold text-[#122420] transition"
+          >
+            Admin
+          </button>
+          <button 
+            type="button" 
+            onclick="fillDemo('reception')" 
+            class="py-2 px-3 text-center rounded-lg border border-[#DCE3DF] bg-white hover:bg-[#F5F7F5] text-xs font-semibold text-[#122420] transition"
+          >
+            Receptionist
+          </button>
+          <button 
+            type="button" 
+            onclick="fillDemo('trainer')" 
+            class="py-2 px-3 text-center rounded-lg border border-[#DCE3DF] bg-white hover:bg-[#F5F7F5] text-xs font-semibold text-[#122420] transition"
+          >
+            Trainer
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script>
+    if (Auth.currentUser()){ window.location.href = 'dashboard.html'; }
+
+    function fillDemo(role){
+      const presets = {
+        admin:     { u:'admin',     p:'admin123' },
+        reception: { u:'reception', p:'front123' },
+        trainer:   { u:'trainer',   p:'train123' }
+      };
+      const c = presets[role];
+      document.getElementById('username').value = c.u;
+      document.getElementById('password').value = c.p;
+    }
+
+    const toggleBtn = document.getElementById('toggle-password');
+    const pwdInput = document.getElementById('password');
+    const pwdText = document.getElementById('pwd-text');
+
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = pwdInput.type === 'password';
+      pwdInput.type = isPassword ? 'text' : 'password';
+      pwdText.textContent = isPassword ? 'Hide' : 'Show';
+    });
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      const err = document.getElementById('login-error');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const origContent = submitBtn.textContent;
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing in...';
+      err.classList.add('hidden');
+      
+      const user = await Auth.loginWithPhp(u, p);
+      if (!user){
+        err.textContent = 'Invalid username or password. Select a demo account above.';
+        err.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = origContent;
+        return;
+      }
+      window.location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>
